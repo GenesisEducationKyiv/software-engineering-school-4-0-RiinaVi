@@ -11,9 +11,9 @@ name: ESLint
 
 on:
   push:
-    branches: [ "main", "hw*-**" ]
+    branches: ['main', 'hw*-**']
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
 
 jobs:
   eslint:
