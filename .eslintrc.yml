@@ -40,16 +40,13 @@ overrides:
     rules:
       '@typescript-eslint/no-explicit-any': off
 rules:
-  import/no-extraneous-dependencies:
-    - error
-    - devDependencies: true
-  #  prettier/prettier: error
+  import/no-extraneous-dependencies: off
   '@typescript-eslint/no-unused-vars':
     - error
     - vars: local
       varsIgnorePattern: '^[iI]gnored'
       args: after-used
-      argsIgnorePattern: "^_|^ignored"
+      argsIgnorePattern: '^_|^ignored'
       ignoreRestSiblings: true
       caughtErrors: all
       caughtErrorsIgnorePattern: '^ignored'
@@ -95,3 +92,4 @@ rules:
     - selector: WithStatement
       message: '`with` is disallowed in strict mode because it makes code impossible to predict and optimize.'
   new-cap: off
+  react/jsx-filename-extension: off
