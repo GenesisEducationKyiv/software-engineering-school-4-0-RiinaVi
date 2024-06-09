@@ -6,6 +6,7 @@
   "scripts": {
     "eslint": "eslint --ext .js,.ts src",
     "prettier": "prettier . --write",
+    "prettier:check": "prettier . --check",
     "dotenv": "node ./node_modules/dotenv/lib/main.js",
     "build": "tsc",
     "start": "ts-node ./dist",
