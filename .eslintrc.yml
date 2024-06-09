@@ -92,3 +92,4 @@ rules:
       message: '`with` is disallowed in strict mode because it makes code impossible to predict and optimize.'
   new-cap: off
   react/jsx-filename-extension: off
+  '@typescript-eslint/explicit-module-boundary-types': error
