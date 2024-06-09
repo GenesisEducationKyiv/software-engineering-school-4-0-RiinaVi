@@ -32,7 +32,6 @@ jobs:
 
       - name: Run ESLint
         run: npm run eslint
-        continue-on-error: true
 
       - name: Run Prettier
         run: npm run prettier
