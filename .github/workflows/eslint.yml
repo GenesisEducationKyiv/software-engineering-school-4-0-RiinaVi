@@ -15,7 +15,7 @@ on:
 
 jobs:
   eslint:
-    name: Run eslint scanning
+    name: Run eslint & prettier scanning
     runs-on: ubuntu-latest
     permissions:
       contents: read
