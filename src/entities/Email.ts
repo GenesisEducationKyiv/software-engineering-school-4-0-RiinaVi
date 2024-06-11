@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Entity, Column, PrimaryColumn } from 'typeorm';
 import { v4 } from 'uuid';
 
