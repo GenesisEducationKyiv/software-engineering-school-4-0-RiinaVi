@@ -1,0 +1,23 @@
+name: Build
+
+on:
+  push:
+    branches: ['main', 'hw*-**']
+
+jobs:
+  eslint:
+    name: Build app
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Tests
+        run: npm run build

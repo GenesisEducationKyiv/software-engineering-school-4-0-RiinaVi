@@ -1,0 +1,23 @@
+name: Run Tests
+
+on:
+  push:
+    branches: ['main', 'hw*-**']
+
+jobs:
+  eslint:
+    name: Run jest unit tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Tests
+        run: npm run test
