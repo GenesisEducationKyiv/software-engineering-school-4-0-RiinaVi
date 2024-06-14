@@ -18,7 +18,7 @@ class SubscribeController {
           validationError,
         });
       }
-      const alreadyExists = emailSubscription.isExists();
+      const alreadyExists = await emailSubscription.isExists();
 
       if (alreadyExists) {
         res.status(EMAIL_ALREADY_EXISTS.code).send({
