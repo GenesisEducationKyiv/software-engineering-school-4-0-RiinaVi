@@ -8,11 +8,17 @@ const router = express.Router();
 const rateController = new controllers.RateController(
   new CurrencyBeaconService(process.env.CURRENCY_BEACON_API_KEY),
 );
+const subscribeController = new controllers.SubscribeController();
+const unsubscribeController = new controllers.UnsubscribeController();
 
-router.get('/rate', rateController.getRate.bind(rateController));
+router.get('/rate', (req, res) => rateController.getRate(req, res));
 
-router.post('/subscribe', new controllers.SubscribeController().subscribe);
+router.post('/subscribe', (req, res) =>
+  subscribeController.subscribe(req, res),
+);
 
-router.get('/unsubscribe', new controllers.UnsubscribeController().unsubscribe);
+router.get('/unsubscribe', (req, res) =>
+  unsubscribeController.unsubscribe(req, res),
+);
 
 export default router;
