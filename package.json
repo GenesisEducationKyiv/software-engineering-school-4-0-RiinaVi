@@ -5,8 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "eslint": "eslint --ext .js,.ts src",
-    "prettier": "prettier . --write",
-    "prettier:check": "prettier . --check",
+    "prettier": "prettier src --write",
+    "prettier:check": "prettier src --check ",
     "dotenv": "node ./node_modules/dotenv/lib/main.js",
     "build": "tsc",
     "start": "ts-node ./dist",
@@ -17,6 +17,11 @@
     "typeorm:revert": "dotenv -- npm run typeorm migration:revert -- -d ./src/ormconfig.ts",
     "test": "jest --setupFiles dotenv/config"
   },
+  "pre-commit": [
+    "eslint",
+    "prettier:check",
+    "test"
+  ],
   "keywords": [],
   "author": "Arina Kysilova",
   "license": "ISC",
@@ -31,6 +36,7 @@
     "node-schedule": "^2.1.1",
     "nodemailer": "^6.9.13",
     "pg": "^8.7.1",
+    "pre-commit": "^1.2.2",
     "ts-jest": "^29.1.2",
     "typeorm": "^0.3.20",
     "uuid": "^8.3.2"
