@@ -1,36 +1,39 @@
 import { Request, Response } from 'express';
 
-import { createEmailSchema } from '../utils/validation';
-import emailRepository from '../repositories/EmailRepository';
+import responseMessages from '../constants/responseMessages';
+import EmailSubscriptionService from '../services/EmailSubscriptionService';
+
+const { EMAIL_DOES_NOT_EXIST, INVALID_PAYLOAD, EMAIL_WAS_UNSUBSCRIBED } =
+  responseMessages;
 
 const unsubscribe = async (req: Request, res: Response): Promise<Response> => {
   const { email } = req.query;
+  const emailSubscription = new EmailSubscriptionService(email as string);
 
   try {
-    const { error: validationError } = createEmailSchema.validate({ email });
-
+    const validationError = emailSubscription.validate();
     if (validationError) {
-      return res.status(400).send({
-        error: { message: validationError.message.split('"').join('') },
+      return res.status(INVALID_PAYLOAD.code).send({
+        validationError,
       });
     }
-    const foundEmail = await emailRepository.findOneBy({ email } as {
-      email: string;
-    });
+    const emailId = await emailSubscription.getExistedId();
 
-    if (!foundEmail) {
-      res.status(409).send({
-        error: { message: 'Email does not exist!' },
-      });
+    if (emailId) {
+      await emailSubscription.unsubscribe();
+
+      res.send(EMAIL_WAS_UNSUBSCRIBED);
     } else {
-      await emailRepository.delete({ id: foundEmail.id });
-
-      res.send({ message: 'Email was unsubscribed!' });
+      res
+        .status(EMAIL_DOES_NOT_EXIST.code)
+        .send({ error: EMAIL_DOES_NOT_EXIST.error });
     }
   } catch (error) {
     console.error(error);
 
-    return res.status(400).send({ error: { message: 'invalid payload' } });
+    return res
+      .status(INVALID_PAYLOAD.code)
+      .send({ error: INVALID_PAYLOAD.error });
   }
 };
 

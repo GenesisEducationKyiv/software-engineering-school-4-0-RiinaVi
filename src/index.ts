@@ -35,10 +35,7 @@ const main = async () => {
   });
 
   // send email every day at 10:00
-  schedule.scheduleJob('00 10 * * *', async () => {
-    console.log('Daily email sending scheduled.');
-    await sendRateToAllEmails();
-  });
+  schedule.scheduleJob('00 10 * * *', sendRateToAllEmails);
 
   app.listen(PORT, () => {
     console.log(

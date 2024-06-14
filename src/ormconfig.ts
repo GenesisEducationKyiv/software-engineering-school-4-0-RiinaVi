@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm';
-import Email from './entities/Email';
+import EmailEntity from './entities/EmailEntity';
 
 export const ormconfig = new DataSource({
   type: 'postgres',
@@ -8,7 +8,7 @@ export const ormconfig = new DataSource({
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,
-  entities: [Email],
+  entities: [EmailEntity],
   synchronize: false,
   migrations: ['src/migrations/*.ts'],
   migrationsTableName: 'migrations',

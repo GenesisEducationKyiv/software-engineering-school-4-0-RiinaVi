@@ -1,37 +1,39 @@
 import { Request, Response } from 'express';
 
-import { createEmailSchema } from '../utils/validation';
-import Email from '../entities/Email';
-import emailRepository from '../repositories/EmailRepository';
+import responseMessages from '../constants/responseMessages';
+import EmailSubscriptionService from '../services/EmailSubscriptionService';
+
+const { EMAIL_ALREADY_EXISTS, INVALID_PAYLOAD } = responseMessages;
 
 const subscribe = async (req: Request, res: Response): Promise<Response> => {
-  const { email } = req.body as { email: string };
+  const { email: requestEmail } = req.body as { email: string };
+
+  const emailSubscription = new EmailSubscriptionService(requestEmail);
 
   try {
-    const { error: validationError } = createEmailSchema.validate({ email });
-
+    const validationError = emailSubscription.validate();
     if (validationError) {
-      return res.status(400).send({
-        error: { message: validationError.message.split('"').join('') },
+      return res.status(INVALID_PAYLOAD.code).send({
+        validationError,
       });
     }
-    const foundEmail = await emailRepository.findOneBy({ email });
+    const alreadyExists = emailSubscription.isExists();
 
-    if (foundEmail) {
-      res.status(409).send({
-        error: { message: 'Email already exists!' },
+    if (alreadyExists) {
+      res.status(EMAIL_ALREADY_EXISTS.code).send({
+        error: EMAIL_ALREADY_EXISTS.error,
       });
     } else {
-      const emailEntry = Email.create({ email });
+      await emailSubscription.subscribe();
 
-      await emailRepository.save(emailEntry);
-
-      res.send(emailEntry);
+      res.send(emailSubscription.email);
     }
   } catch (error) {
     console.error(error);
 
-    return res.status(400).send({ error: { message: 'invalid payload' } });
+    return res
+      .status(INVALID_PAYLOAD.code)
+      .send({ error: INVALID_PAYLOAD.error });
   }
 };
 
