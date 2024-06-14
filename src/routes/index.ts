@@ -12,8 +12,8 @@ const rateController = new controllers.RateController(
 
 router.get('/rate', rateController.getRate);
 
-router.post('/subscribe', controllers.subscribe);
+router.post('/subscribe', new controllers.SubscribeController().subscribe);
 
-router.get('/unsubscribe', controllers.unsubscribe);
+router.get('/unsubscribe', new controllers.UnsubscribeController().unsubscribe);
 
 export default router;
