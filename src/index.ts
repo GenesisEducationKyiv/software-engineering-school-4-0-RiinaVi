@@ -40,11 +40,11 @@ const main = async () => {
     await sendRateToAllEmails();
   });
 
-  app.listen(PORT, () => {
+  app.listen(PORT ?? 8000, () => {
     console.log(
-      `server started at http://${
-        process.env.SERVER_IP ?? 'localhost'
-      }:${PORT}`,
+      `server started at http://${process.env.SERVER_IP ?? 'localhost'}:${
+        PORT ?? 8000
+      }`,
     );
   });
 };

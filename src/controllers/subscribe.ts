@@ -4,7 +4,10 @@ import { createEmailSchema } from '../utils/validation';
 import Email from '../entities/Email';
 import emailRepository from '../repositories/EmailRepository';
 
-const subscribe = async (req: Request, res: Response): Promise<Response> => {
+const subscribe = async (
+  req: Request,
+  res: Response,
+): Promise<Response | undefined> => {
   const { email } = req.body as { email: string };
 
   try {

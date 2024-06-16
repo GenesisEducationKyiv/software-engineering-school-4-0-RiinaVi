@@ -4,7 +4,8 @@ services:
   postgres:
     image: postgres:13.1
     healthcheck:
-      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "${POSTGRES_USER}" ]
+      test:
+        ['CMD', 'pg_isready', '-q', '-d', 'postgres', '-U', '${POSTGRES_USER}']
       timeout: 45s
       interval: 10s
       retries: 10

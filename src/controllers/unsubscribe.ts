@@ -3,7 +3,10 @@ import { Request, Response } from 'express';
 import { createEmailSchema } from '../utils/validation';
 import emailRepository from '../repositories/EmailRepository';
 
-const unsubscribe = async (req: Request, res: Response): Promise<Response> => {
+const unsubscribe = async (
+  req: Request,
+  res: Response,
+): Promise<Response | undefined> => {
   const { email } = req.query;
 
   try {

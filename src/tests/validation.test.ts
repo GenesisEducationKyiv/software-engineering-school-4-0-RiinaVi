@@ -5,7 +5,7 @@ describe('email validation', () => {
     const value = { email: 'testexample.com' };
     const { error: validationError } = createEmailSchema.validate(value);
 
-    expect(validationError.message.split('"').join('')).toEqual(
+    expect(validationError?.message.split('"').join('')).toEqual(
       'email must be a valid email',
     );
   });
