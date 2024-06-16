@@ -8,7 +8,10 @@ const { INVALID_STATUS_VALUE } = responseMessages;
 class RateController {
   constructor(private readonly rateSourceService: RateSourceService) {}
 
-  public async getRate(_: Request, res: Response): Promise<Response> {
+  public async getRate(
+    _: Request,
+    res: Response,
+  ): Promise<Response | undefined> {
     const rate = await this.rateSourceService.retrieve();
 
     if (!rate) {

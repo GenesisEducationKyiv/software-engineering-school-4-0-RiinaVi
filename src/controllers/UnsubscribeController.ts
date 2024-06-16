@@ -7,7 +7,10 @@ const { EMAIL_DOES_NOT_EXIST, INVALID_PAYLOAD, EMAIL_WAS_UNSUBSCRIBED } =
   responseMessages;
 
 class UnsubscribeController {
-  public async unsubscribe(req: Request, res: Response): Promise<Response> {
+  public async unsubscribe(
+    req: Request,
+    res: Response,
+  ): Promise<Response | undefined> {
     const { email } = req.query;
     const emailSubscription = new EmailSubscriptionService(email as string);
 

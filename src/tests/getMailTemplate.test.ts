@@ -4,7 +4,7 @@ describe('getMailTemplate', () => {
   test('should return default mail template', () => {
     const email = 'test@example.com';
     const unsubscribeURL = `http://${process.env.SERVER_IP ?? 'localhost'}:${
-      process.env.PORT
+      process.env.PORT ?? 8000
     }/unsubscribe?email=${email}`;
 
     const template = getMailTemplate(39, unsubscribeURL).trim();

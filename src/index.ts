@@ -37,11 +37,11 @@ const main = async () => {
   // send email every day at 10:00
   schedule.scheduleJob('00 10 * * *', sendRateToAllEmails);
 
-  app.listen(PORT, () => {
+  app.listen(PORT ?? 8000, () => {
     console.log(
-      `server started at http://${
-        process.env.SERVER_IP ?? 'localhost'
-      }:${PORT}`,
+      `server started at http://${process.env.SERVER_IP ?? 'localhost'}:${
+        PORT ?? 8000
+      }`,
     );
   });
 };

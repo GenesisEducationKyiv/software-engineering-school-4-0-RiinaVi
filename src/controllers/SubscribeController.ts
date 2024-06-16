@@ -6,7 +6,10 @@ import EmailSubscriptionService from '../services/EmailSubscriptionService';
 const { EMAIL_ALREADY_EXISTS, INVALID_PAYLOAD } = responseMessages;
 
 class SubscribeController {
-  public async subscribe(req: Request, res: Response): Promise<Response> {
+  public async subscribe(
+    req: Request,
+    res: Response,
+  ): Promise<Response | undefined> {
     const { email: requestEmail } = req.body as { email: string };
 
     const emailSubscription = new EmailSubscriptionService(requestEmail);
