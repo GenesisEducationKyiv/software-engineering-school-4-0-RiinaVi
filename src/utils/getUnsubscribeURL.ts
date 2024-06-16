@@ -1,6 +1,7 @@
-const getUnsubscribeURL = (email: string): string =>
-  `http://${process.env.SERVER_IP ?? 'localhost'}:${
-    process.env.PORT ?? 8000
-  }/unsubscribe?email=${email}`;
+const getUnsubscribeURL = (
+  email: string,
+  host = 'localhost',
+  port = 8000,
+): string => `http://${host}:${port}/unsubscribe?email=${email}`;
 
 export default getUnsubscribeURL;

@@ -1,19 +1,35 @@
 import emailRepository from '../repositories/EmailRepository';
 import emailTransporter from '../utils/emailTransporter';
-import getEmailOptions from '../utils/getEmailOptions';
+import getUnsubscribeURL from '../utils/getUnsubscribeURL';
+
+const EMAIL_SUBJECT = 'Current USD to UAH exchange rate';
 
 export class EmailSendingService {
-  static async sendEmail(email: string, currentRate: number): Promise<void> {
-    const mailOptions = getEmailOptions(email, currentRate);
-
-    await emailTransporter.sendMail(mailOptions);
+  static async sendEmail(email: string, emailTemplate: string): Promise<void> {
+    await emailTransporter.sendMail({
+      from: email,
+      to: process.env.SENDER_EMAIL_ADDRESS,
+      subject: EMAIL_SUBJECT,
+      html: emailTemplate,
+    });
   }
 
-  static async sendRateToALlEmail(currentRate: number): Promise<void> {
+  static async sendRateToALlEmails(
+    getTemplate: (url: string) => string,
+  ): Promise<void> {
     const allEmails = await emailRepository.find();
 
-    for (const emailEntry of allEmails) {
-      await EmailSendingService.sendEmail(emailEntry.email, currentRate);
+    for (const { email } of allEmails) {
+      await EmailSendingService.sendEmail(
+        email,
+        getTemplate(
+          getUnsubscribeURL(
+            email,
+            process.env.SERVER_IP,
+            Number(process.env.PORT),
+          ),
+        ),
+      );
     }
   }
 }

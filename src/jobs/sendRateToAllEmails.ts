@@ -1,5 +1,6 @@
 import { EmailSendingService } from '../services/EmailSendingService';
 import { CurrencyBeaconService } from '../services/RateSourceService';
+import getRateEmailTemplate from '../utils/getRateEmailTemplate';
 
 const sendRateToAllEmails = async (): Promise<void> => {
   const currentRateSource = new CurrencyBeaconService(
@@ -8,7 +9,8 @@ const sendRateToAllEmails = async (): Promise<void> => {
   const currentRate = await currentRateSource.retrieve();
 
   if (currentRate) {
-    await EmailSendingService.sendRateToALlEmail(currentRate);
+    const getTemplate = getRateEmailTemplate(currentRate);
+    await EmailSendingService.sendRateToALlEmails(getTemplate);
   }
 };
 

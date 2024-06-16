@@ -21,7 +21,7 @@ class UnsubscribeController {
           validationError,
         });
       }
-      const emailId = await emailSubscription.getExistedId();
+      const emailId = await emailSubscription.getExistingId();
 
       if (emailId) {
         await emailSubscription.unsubscribe();

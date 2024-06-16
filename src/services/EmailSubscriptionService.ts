@@ -32,7 +32,7 @@ export default class EmailSubscriptionService {
     return Boolean(foundEmail);
   }
 
-  async getExistedId(): Promise<string | undefined> {
+  async getExistingId(): Promise<string | undefined> {
     const foundEmail = await emailRepository.findOneBy({
       email: this.emailEntry.email,
     });
