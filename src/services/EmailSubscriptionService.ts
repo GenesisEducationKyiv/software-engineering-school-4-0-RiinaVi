@@ -9,11 +9,11 @@ export default class EmailSubscriptionService {
     this.emailEntry = EmailEntity.create({ email });
   }
 
-  get email() {
+  get email(): EmailEntity {
     return this.emailEntry;
   }
 
-  validate() {
+  validate(): { error: { message: string } } | undefined {
     const { error: validationError } = createEmailSchema.validate({
       email: this.emailEntry.email,
     });
@@ -25,25 +25,25 @@ export default class EmailSubscriptionService {
     }
   }
 
-  async isExists() {
+  async isExists(): Promise<boolean> {
     const foundEmail = await emailRepository.findOneBy({
       email: this.emailEntry.email,
     });
     return Boolean(foundEmail);
   }
 
-  async getExistedId() {
+  async getExistedId(): Promise<string | undefined> {
     const foundEmail = await emailRepository.findOneBy({
       email: this.emailEntry.email,
     });
     return foundEmail?.id;
   }
 
-  async subscribe() {
+  async subscribe(): Promise<void> {
     await emailRepository.save(this.emailEntry);
   }
 
-  async unsubscribe() {
+  async unsubscribe(): Promise<void> {
     await emailRepository.delete({ id: this.emailEntry.id });
   }
 }
