@@ -18,4 +18,8 @@ export default {
     },
     code: 400,
   },
+  SOMETHING_WENT_WRONG: {
+    error: { message: 'something went wrong :(' },
+    code: 500,
+  },
 };
