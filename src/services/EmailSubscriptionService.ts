@@ -36,7 +36,7 @@ export default class EmailSubscriptionService {
     const foundEmail = await emailRepository.findOneBy({
       email: this.emailEntry.email,
     });
-    return foundEmail.id;
+    return foundEmail?.id;
   }
 
   async subscribe() {

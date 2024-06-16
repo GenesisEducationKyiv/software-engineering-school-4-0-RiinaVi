@@ -6,7 +6,7 @@ import { CurrencyBeaconService } from '../services/RateSourceService';
 const router = express.Router();
 
 const rateController = new controllers.RateController(
-  new CurrencyBeaconService(process.env.CURRENCY_BEACON_API_KEY),
+  new CurrencyBeaconService(process.env.CURRENCY_BEACON_API_KEY ?? ''),
 );
 const subscribeController = new controllers.SubscribeController();
 const unsubscribeController = new controllers.UnsubscribeController();
