@@ -1,15 +1,24 @@
-interface CurrencyBeaconResponse {
-  response: {
-    rates?: {
-      UAH: number;
-    };
+export interface CurrencyBeaconResponse {
+  meta: {
+    code: 200 | 401 | 422 | 500 | 503 | 429;
+    error_type?: string;
+    error_detail?: string;
   };
+  rates?: {
+    UAH: number;
+  };
+}
+
+export interface RateSourceResponse {
+  rate?: number;
+  code: number;
+  errorMessage?: string;
 }
 
 export abstract class RateSourceService {
   protected constructor(protected readonly url: string) {}
 
-  abstract retrieve(): Promise<number | undefined>;
+  abstract retrieve(): Promise<RateSourceResponse>;
 }
 
 export class CurrencyBeaconService extends RateSourceService {
@@ -19,11 +28,19 @@ export class CurrencyBeaconService extends RateSourceService {
     );
   }
 
-  async retrieve(): Promise<number | undefined> {
+  async retrieve(): Promise<RateSourceResponse> {
     const rawResponse = await fetch(this.url);
 
-    const jsonResponse = (await rawResponse.json()) as CurrencyBeaconResponse;
+    const { rates, meta } =
+      (await rawResponse?.json()) as CurrencyBeaconResponse;
 
-    return jsonResponse.response?.rates?.UAH;
+    return {
+      rate: rates?.UAH,
+      code: meta.code,
+      errorMessage:
+        meta?.error_type && meta?.error_detail
+          ? `${meta.error_type}: ${meta.error_detail}`
+          : undefined,
+    };
   }
 }

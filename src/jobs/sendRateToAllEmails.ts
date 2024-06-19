@@ -6,10 +6,10 @@ const sendRateToAllEmails = async (): Promise<void> => {
   const currentRateSource = new CurrencyBeaconService(
     process.env.CURRENCY_BEACON_API_KEY ?? '',
   );
-  const currentRate = await currentRateSource.retrieve();
+  const { rate } = await currentRateSource.retrieve();
 
-  if (currentRate) {
-    const getTemplate = getRateEmailTemplate(currentRate);
+  if (rate) {
+    const getTemplate = getRateEmailTemplate(rate);
     await EmailSendingService.sendRateToALlEmails(getTemplate);
   }
 };
