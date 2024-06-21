@@ -1,4 +1,3 @@
-/* eslint-disable */
 import request from 'supertest';
 import * as sinon from 'sinon';
 import { app } from '../../app';

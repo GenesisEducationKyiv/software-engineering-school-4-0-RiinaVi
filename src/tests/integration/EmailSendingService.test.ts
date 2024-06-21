@@ -1,4 +1,3 @@
-/* eslint-disable */
 import * as sinon from 'sinon';
 import { EmailSendingService } from '../../services/EmailSendingService';
 import getRateEmailTemplate from '../../utils/getRateEmailTemplate';
