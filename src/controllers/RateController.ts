@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import responseMessages from '../constants/responseMessages';
-import { RateSourceService } from '../services/RateSourceService';
+import { RateSourceService } from '../services/rateSource/RateSourceService';
 
 const { INVALID_STATUS_VALUE } = responseMessages;
 

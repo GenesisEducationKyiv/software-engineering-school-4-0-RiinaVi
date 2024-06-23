@@ -1,15 +1,11 @@
+import { RateSourceService } from './RateSourceService';
+
 interface CurrencyBeaconResponse {
   response: {
     rates?: {
       UAH: number;
     };
   };
-}
-
-export abstract class RateSourceService {
-  protected constructor(protected readonly url: string) {}
-
-  abstract retrieve(): Promise<number | undefined>;
 }
 
 export class CurrencyBeaconService extends RateSourceService {
