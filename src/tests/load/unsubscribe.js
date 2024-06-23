@@ -12,7 +12,9 @@ export const options = {
 
 export default function () {
   const email = 'riinavi86@gmail.com';
-  const res = http.post(`http://localhost:8000/unsubscribe?email=${email}`);
+  const res = http.post(
+    `http://localhost:${__ENV.PORT}/unsubscribe?email=${email}`,
+  );
   check(res, {
     'status was 200': (r) => r.status === 200,
   });

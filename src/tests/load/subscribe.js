@@ -14,7 +14,7 @@ export default function () {
   const body = {
     email: 'riinavi86@gmail.com',
   };
-  const res = http.post('http://localhost:8000/subscribe', body);
+  const res = http.post(`http://localhost:${__ENV.PORT}/subscribe`, body);
   check(res, {
     'status was 200': (r) => r.status === 200,
   });

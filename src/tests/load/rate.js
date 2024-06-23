@@ -11,7 +11,7 @@ export const options = {
 };
 
 export default function () {
-  const res = http.get('http://localhost:8000/rate');
+  const res = http.get(`http://localhost:${__ENV.PORT}/rate`);
   check(res, {
     'status was 200': (r) => r.status === 200,
   });
