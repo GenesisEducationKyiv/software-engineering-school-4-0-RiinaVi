@@ -9,6 +9,7 @@ import schedule from 'node-schedule';
 import router from './routes';
 import sendRateToAllEmails from './jobs/sendRateToAllEmails';
 import responseMessages from './constants/responseMessages';
+import validateEnvironment from './utils/validateEnvironment';
 
 const { SOMETHING_WENT_WRONG } = responseMessages;
 // every day at 10:00
@@ -21,6 +22,8 @@ dotenv.config();
 const { PORT } = process.env;
 
 const main = async () => {
+  validateEnvironment();
+
   await dataSource.initialize();
 
   app.use(cors());
