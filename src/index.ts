@@ -1,6 +1,6 @@
 import { app, main } from './app';
 
-const { PORT } = process.env;
+const { PORT, SERVER_IP } = process.env;
 
 main().catch((err) => {
   console.error(err);
@@ -8,8 +8,6 @@ main().catch((err) => {
 
 app.listen(PORT ?? 8000, () => {
   console.log(
-    `server started at http://${process.env.SERVER_IP ?? 'localhost'}:${
-      PORT ?? 8000
-    }`,
+    `server started at http://${SERVER_IP ?? 'localhost'}:${PORT ?? 8000}`,
   );
 });
