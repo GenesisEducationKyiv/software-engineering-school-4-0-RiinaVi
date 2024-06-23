@@ -1,16 +1,16 @@
-import { EmailSendingService } from '../services/EmailSendingService';
-import { CurrencyBeaconService } from '../services/RateSourceService';
+import EmailSendingService from '../services/EmailSendingService';
+import { CurrencyBeaconService } from '../services/rateSource/CurrencyBeaconService';
 import getRateEmailTemplate from '../utils/getRateEmailTemplate';
 
 const sendRateToAllEmails = async (): Promise<void> => {
   const currentRateSource = new CurrencyBeaconService(
-    process.env.CURRENCY_BEACON_API_KEY ?? '',
+    process.env.RATE_SOURCE_API_KEY ?? '',
   );
   const currentRate = await currentRateSource.retrieve();
 
   if (currentRate) {
     const getTemplate = getRateEmailTemplate(currentRate);
-    await EmailSendingService.sendRateToALlEmails(getTemplate);
+    await EmailSendingService.sendRateToAllEmails(getTemplate);
   }
 };
 
