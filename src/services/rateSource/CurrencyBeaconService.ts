@@ -1,3 +1,5 @@
+import { RateSourceResponse, RateSourceService } from './RateSourceService';
+
 export interface CurrencyBeaconResponse {
   meta: {
     code: 200 | 401 | 422 | 500 | 503 | 429;
@@ -7,18 +9,6 @@ export interface CurrencyBeaconResponse {
   rates?: {
     UAH: number;
   };
-}
-
-export interface RateSourceResponse {
-  rate?: number;
-  code: number;
-  errorMessage?: string;
-}
-
-export abstract class RateSourceService {
-  protected constructor(protected readonly url: string) {}
-
-  abstract retrieve(): Promise<RateSourceResponse>;
 }
 
 export class CurrencyBeaconService extends RateSourceService {

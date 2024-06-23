@@ -1,5 +1,5 @@
 import * as sinon from 'sinon';
-import { EmailSendingService } from '../../services/EmailSendingService';
+import EmailSendingService from '../../services/EmailSendingService';
 import getRateEmailTemplate from '../../utils/getRateEmailTemplate';
 import getUnsubscribeURL from '../../utils/getUnsubscribeURL';
 import emailTransporter from '../../utils/emailTransporter';

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { RateSourceService } from '../services/RateSourceService';
+import { RateSourceService } from '../services/rateSource/RateSourceService';
 
 class RateController {
   constructor(private readonly rateSourceService: RateSourceService) {}

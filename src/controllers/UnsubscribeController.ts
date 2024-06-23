@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 
-import responseMessages from '../constants/responseMessages';
+import responseMessages, {
+  CustomResponse,
+} from '../constants/responseMessages';
 import EmailSubscriptionService from '../services/EmailSubscriptionService';
 
-const { EMAIL_DOES_NOT_EXIST, INVALID_PAYLOAD, EMAIL_WAS_UNSUBSCRIBED } =
-  responseMessages;
+const { EMAIL_WAS_UNSUBSCRIBED } = responseMessages;
 
 class UnsubscribeController {
   public async unsubscribe(
@@ -15,29 +16,16 @@ class UnsubscribeController {
     const emailSubscription = new EmailSubscriptionService(email as string);
 
     try {
-      const validationError = emailSubscription.validate();
-      if (validationError) {
-        return res.status(INVALID_PAYLOAD.code).send({
-          validationError,
-        });
-      }
-      const emailId = await emailSubscription.getExistingId();
+      await emailSubscription.unsubscribe();
 
-      if (emailId) {
-        await emailSubscription.unsubscribe();
-
-        res.send(EMAIL_WAS_UNSUBSCRIBED);
-      } else {
-        res
-          .status(EMAIL_DOES_NOT_EXIST.code)
-          .send({ error: EMAIL_DOES_NOT_EXIST.error });
-      }
+      res.send(EMAIL_WAS_UNSUBSCRIBED);
     } catch (error) {
-      console.error(error);
+      const typedError = error as CustomResponse;
+      console.error(typedError);
 
       return res
-        .status(INVALID_PAYLOAD.code)
-        .send({ error: INVALID_PAYLOAD.error });
+        .status(typedError.code)
+        .send({ error: typedError.error?.message });
     }
   }
 }

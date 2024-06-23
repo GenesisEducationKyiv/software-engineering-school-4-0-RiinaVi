@@ -4,8 +4,8 @@ import getUnsubscribeURL from '../utils/getUnsubscribeURL';
 
 const EMAIL_SUBJECT = 'Current USD to UAH exchange rate';
 
-export class EmailSendingService {
-  static async sendEmail(email: string, emailTemplate: string): Promise<void> {
+class EmailSendingService {
+  async sendEmail(email: string, emailTemplate: string): Promise<void> {
     await emailTransporter.sendMail({
       from: process.env.SENDER_EMAIL_ADDRESS,
       to: email,
@@ -14,13 +14,13 @@ export class EmailSendingService {
     });
   }
 
-  static async sendRateToALlEmails(
+  async sendRateToAllEmails(
     getTemplate: (url: string) => string,
   ): Promise<void> {
     const allEmails = await emailRepository.find();
 
     for (const { email } of allEmails) {
-      await EmailSendingService.sendEmail(
+      await this.sendEmail(
         email,
         getTemplate(
           getUnsubscribeURL(
@@ -33,3 +33,5 @@ export class EmailSendingService {
     }
   }
 }
+
+export default new EmailSendingService();
