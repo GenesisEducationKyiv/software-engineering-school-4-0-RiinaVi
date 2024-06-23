@@ -15,7 +15,8 @@
     "typeorm": "./node_modules/.bin/ts-node ./node_modules/.bin/typeorm",
     "typeorm:run": "dotenv -- npm run typeorm migration:run -- -d ./src/ormconfig.ts",
     "typeorm:revert": "dotenv -- npm run typeorm migration:revert -- -d ./src/ormconfig.ts",
-    "test": "jest --setupFiles dotenv/config"
+    "test": "jest --setupFiles dotenv/config",
+    "test:load": "k6 run"
   },
   "pre-commit": [
     "eslint",
