@@ -1,6 +1,10 @@
 import EmailEntity from '../entities/EmailEntity';
 import emailRepository from '../repositories/EmailRepository';
 import { createEmailSchema } from '../utils/validation';
+import responseMessages from '../constants/responseMessages';
+
+const { EMAIL_ALREADY_EXISTS, INVALID_PAYLOAD, EMAIL_DOES_NOT_EXIST } =
+  responseMessages;
 
 export default class EmailSubscriptionService {
   private readonly emailEntry: EmailEntity;
@@ -39,11 +43,39 @@ export default class EmailSubscriptionService {
     return foundEmail?.id;
   }
 
-  async subscribe(): Promise<void> {
+  async save(): Promise<void> {
     await emailRepository.save(this.emailEntry);
   }
 
-  async unsubscribe(): Promise<void> {
+  async delete(): Promise<void> {
     await emailRepository.delete({ id: this.emailEntry.id });
+  }
+
+  async subscribe(): Promise<void> {
+    const validationError = this.validate();
+    if (validationError) {
+      throw INVALID_PAYLOAD;
+    }
+    const alreadyExists = await this.isExists();
+
+    if (alreadyExists) {
+      throw EMAIL_ALREADY_EXISTS;
+    }
+
+    await this.save();
+  }
+
+  async unsubscribe(): Promise<void> {
+    const validationError = this.validate();
+    if (validationError) {
+      throw INVALID_PAYLOAD;
+    }
+    const emailId = await this.getExistingId();
+
+    if (!emailId) {
+      throw EMAIL_DOES_NOT_EXIST;
+    }
+
+    await this.delete();
   }
 }

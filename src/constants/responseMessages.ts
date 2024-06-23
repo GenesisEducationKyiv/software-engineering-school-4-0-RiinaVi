@@ -1,3 +1,11 @@
+export interface CustomResponse {
+  error?: {
+    message: string;
+  };
+  message?: string;
+  code: number;
+}
+
 export default {
   EMAIL_DOES_NOT_EXIST: {
     error: { message: 'Email does not exist!' },
@@ -11,10 +19,10 @@ export default {
     error: { message: 'invalid payload' },
     code: 400,
   },
-  EMAIL_WAS_UNSUBSCRIBED: { message: 'Email was unsubscribed!' },
+  EMAIL_WAS_UNSUBSCRIBED: { message: 'Email was unsubscribed!', code: 200 },
   INVALID_STATUS_VALUE: {
     error: {
-      message: 'Email was unsubscribed!',
+      message: 'Invalid status value',
     },
     code: 400,
   },
@@ -22,4 +30,8 @@ export default {
     error: { message: 'something went wrong :(' },
     code: 500,
   },
-};
+  API_KEY_NOT_FOUND: {
+    error: { message: 'API key is not found' },
+    code: 500,
+  },
+} as { [key: string]: CustomResponse };
