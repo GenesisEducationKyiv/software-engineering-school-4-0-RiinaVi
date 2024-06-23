@@ -1,13 +1,11 @@
 import express from 'express';
 
 import * as controllers from '../controllers';
-import { CurrencyBeaconService } from '../services/rateSource/CurrencyBeaconService';
+import CurrencyBeaconService from '../services/rateSource/CurrencyBeaconService';
 
 const router = express.Router();
 
-const rateController = new controllers.RateController(
-  new CurrencyBeaconService(process.env.RATE_SOURCE_API_KEY ?? ''),
-);
+const rateController = new controllers.RateController(CurrencyBeaconService);
 const subscribeController = new controllers.SubscribeController();
 const unsubscribeController = new controllers.UnsubscribeController();
 

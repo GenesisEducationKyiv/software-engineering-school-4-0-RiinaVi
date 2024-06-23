@@ -1,4 +1,5 @@
 import { RateSourceResponse, RateSourceService } from './RateSourceService';
+import * as process from 'process';
 
 export interface CurrencyBeaconResponse {
   meta: {
@@ -11,7 +12,7 @@ export interface CurrencyBeaconResponse {
   };
 }
 
-export class CurrencyBeaconService extends RateSourceService {
+class CurrencyBeaconService extends RateSourceService {
   constructor(apiKey: string) {
     super(
       `https://api.currencybeacon.com/v1/latest?api_key=${apiKey}&symbols=UAH`,
@@ -34,3 +35,7 @@ export class CurrencyBeaconService extends RateSourceService {
     };
   }
 }
+
+export default new CurrencyBeaconService(
+  process.env.CURRENCY_BEACON_API_KEY ?? '',
+);
