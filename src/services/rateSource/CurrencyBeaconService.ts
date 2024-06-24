@@ -1,4 +1,5 @@
 import { RateSourceService } from './RateSourceService';
+import { AbstractTransportLayer } from '../transportLayer/AbstractTransportLayer';
 
 interface CurrencyBeaconResponse {
   response: {
@@ -9,16 +10,17 @@ interface CurrencyBeaconResponse {
 }
 
 export class CurrencyBeaconService extends RateSourceService {
-  constructor(apiKey: string) {
+  constructor(apiKey: string, transportLayer: AbstractTransportLayer) {
     super(
       `https://api.currencybeacon.com/v1/latest?api_key=${apiKey}&symbols=UAH`,
+      transportLayer,
     );
   }
 
   async retrieve(): Promise<number | undefined> {
-    const rawResponse = await fetch(this.url);
-
-    const jsonResponse = (await rawResponse.json()) as CurrencyBeaconResponse;
+    const jsonResponse = await this.transportLayer.get<CurrencyBeaconResponse>(
+      this.url,
+    );
 
     return jsonResponse.response?.rates?.UAH;
   }
