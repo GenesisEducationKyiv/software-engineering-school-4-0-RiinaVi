@@ -2,15 +2,15 @@ import { Entity, Column, PrimaryColumn } from 'typeorm';
 import { v4 } from 'uuid';
 
 @Entity('emails')
-class Email {
+class EmailEntity {
   @PrimaryColumn({ type: 'text' })
   id!: string;
 
   @Column({ type: 'text' })
   email!: string;
 
-  static create(data: Omit<Email, 'id'>): Email {
-    const emailEntry = new Email();
+  static create(data: Omit<EmailEntity, 'id'>): EmailEntity {
+    const emailEntry = new EmailEntity();
 
     emailEntry.id = v4();
     emailEntry.email = data.email;
@@ -19,4 +19,4 @@ class Email {
   }
 }
 
-export default Email;
+export default EmailEntity;

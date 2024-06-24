@@ -36,7 +36,7 @@ GET /rate
 
 #### Response
 
-```javascript
+```
 {
   "rate": number,
 }
@@ -56,7 +56,7 @@ POST /subscribe
 
 Returns newly created email data
 
-```javascript
+```
 {
   "id": string,
   "email": string,
@@ -77,7 +77,7 @@ GET /unsubscribe
 
 Returns success message on 200
 
-```javascript
+```
 {
   "message": string,
 }

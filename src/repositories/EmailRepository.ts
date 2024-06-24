@@ -1,4 +1,4 @@
-import Email from '../entities/Email';
+import EmailEntity from '../entities/EmailEntity';
 import { ormconfig as dataSource } from '../ormconfig';
 
-export default dataSource.getRepository(Email);
+export default dataSource.getRepository(EmailEntity);

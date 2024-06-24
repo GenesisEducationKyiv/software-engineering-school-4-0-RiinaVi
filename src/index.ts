@@ -8,6 +8,12 @@ import schedule from 'node-schedule';
 
 import router from './routes';
 import sendRateToAllEmails from './jobs/sendRateToAllEmails';
+import responseMessages from './constants/responseMessages';
+import validateEnvironment from './utils/validateEnvironment';
+
+const { SOMETHING_WENT_WRONG } = responseMessages;
+// every day at 10:00
+const SCHEDULING_TIME = '00 10 * * *';
 
 const app = express();
 
@@ -16,6 +22,8 @@ dotenv.config();
 const { PORT } = process.env;
 
 const main = async () => {
+  validateEnvironment();
+
   await dataSource.initialize();
 
   app.use(cors());
@@ -29,16 +37,12 @@ const main = async () => {
     if (err.stack) {
       console.error(err.stack);
       return res
-        .status(500)
-        .send({ error: { message: 'something went wrong :(' } });
+        .status(SOMETHING_WENT_WRONG.code)
+        .send(SOMETHING_WENT_WRONG.error);
     }
   });
 
-  // send email every day at 10:00
-  schedule.scheduleJob('00 10 * * *', async () => {
-    console.log('Daily email sending scheduled.');
-    await sendRateToAllEmails();
-  });
+  schedule.scheduleJob(SCHEDULING_TIME, sendRateToAllEmails);
 
   app.listen(PORT ?? 8000, () => {
     console.log(

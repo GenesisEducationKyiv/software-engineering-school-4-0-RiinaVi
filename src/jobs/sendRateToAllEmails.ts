@@ -1,40 +1,18 @@
-import nodemailer from 'nodemailer';
-
-import getRateData from '../utils/getRateData';
-import getMailTemplate from '../utils/getMailTemplate';
-import emailRepository from '../repositories/EmailRepository';
+import EmailSendingService from '../services/EmailSendingService';
+import { CurrencyBeaconService } from '../services/rateSource/CurrencyBeaconService';
+import getRateEmailTemplate from '../utils/getRateEmailTemplate';
+import FetchTransportLayer from '../services/transportLayer/FetchTransportLayer';
 
 const sendRateToAllEmails = async (): Promise<void> => {
-  const currentRate = await getRateData(
-    process.env.CURRENCY_BEACON_API_KEY ?? '',
+  const currentRateSource = new CurrencyBeaconService(
+    process.env.RATE_SOURCE_API_KEY ?? '',
+    FetchTransportLayer,
   );
-  const allEmails = await emailRepository.find();
+  const currentRate = await currentRateSource.retrieve();
 
-  for (const emailEntry of allEmails) {
-    const unsubscribeURL = `http://${process.env.SERVER_IP ?? 'localhost'}:${
-      process.env.PORT ?? 8000
-    }/unsubscribe?email=${emailEntry.email}`;
-
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.SENDER_EMAIL_ADDRESS,
-        pass: process.env.SENDER_EMAIL_PASSWORD,
-      },
-    });
-
-    if (currentRate) {
-      const mailOptions = {
-        from: process.env.SENDER_EMAIL_ADDRESS,
-        to: emailEntry.email,
-        subject: 'Current USD to UAH exchange rate',
-        html: getMailTemplate(currentRate, unsubscribeURL),
-      };
-
-      const sentMessageInfo = await transporter.sendMail(mailOptions);
-
-      console.log('E-mail Sent: %s', sentMessageInfo.messageId);
-    }
+  if (currentRate) {
+    const getTemplate = getRateEmailTemplate(currentRate);
+    await EmailSendingService.sendRateToAllEmails(getTemplate);
   }
 };
 
