@@ -7,7 +7,7 @@ type NBUResponse = {
   exchangedate: string;
 }[];
 
-const { SOMETHING_WENT_WRONG } = responseMessages;
+const { INTERNAL_SERVER_ERROR } = responseMessages;
 
 class NBUService extends RateSourceService {
   constructor() {
@@ -28,8 +28,8 @@ class NBUService extends RateSourceService {
       };
     } else {
       return {
-        code: SOMETHING_WENT_WRONG.code,
-        errorMessage: SOMETHING_WENT_WRONG.error?.message,
+        code: INTERNAL_SERVER_ERROR.code,
+        errorMessage: INTERNAL_SERVER_ERROR.error?.message,
       };
     }
   }

@@ -27,6 +27,6 @@ export class CurrencyExchangeRateService {
       }
     }
 
-    throw responseMessages.SOMETHING_WENT_WRONG;
+    throw responseMessages.NO_PROVIDER_AVAILABLE;
   }
 }
