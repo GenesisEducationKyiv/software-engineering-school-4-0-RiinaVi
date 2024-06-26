@@ -13,9 +13,12 @@ const formatLogData = (input: Input): string =>
   } - error: ${input.response.errorMessage ?? 'n/a'}\n`;
 
 const logResponse = (input: Input): void => {
-  fs.appendFile('logs.txt', formatLogData(input), function (err) {
-    if (err) throw err;
+  fs.appendFile('logs.txt', formatLogData(input), function (error) {
+    if (error) {
+      console.error('ERROR: ', error);
+    }
   });
+  console.log(formatLogData(input));
 };
 
 export default logResponse;
