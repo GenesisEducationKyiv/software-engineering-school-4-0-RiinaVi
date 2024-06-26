@@ -1,9 +1,9 @@
 import EmailSendingService from '../services/EmailSendingService';
-import currencyBeaconService from '../services/rateSource/CurrencyBeaconService';
 import getRateEmailTemplate from '../utils/getRateEmailTemplate';
+import { CurrencyExchangeRateService } from '../services/CurrencyExchangeRateService';
 
 const sendRateToAllEmails = async (): Promise<void> => {
-  const { rate } = await currencyBeaconService.retrieve();
+  const { rate } = await new CurrencyExchangeRateService().getRate();
 
   if (rate) {
     const getTemplate = getRateEmailTemplate(rate);
