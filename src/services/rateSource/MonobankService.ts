@@ -19,7 +19,7 @@ class MonobankService extends RateSourceService {
   }
 
   async retrieve(): Promise<RateSourceResponse> {
-    const rawResponse = await fetch(this.url);
+    const rawResponse = await fetch(this.getUrl);
 
     const jsonResponse = (await rawResponse?.json()) as MonobankResponse;
 

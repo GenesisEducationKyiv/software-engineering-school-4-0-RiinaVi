@@ -5,7 +5,7 @@ export interface RateSourceResponse {
 }
 
 export abstract class RateSourceService {
-  protected constructor(protected readonly url: string) {}
+  protected constructor(private readonly url: string) {}
 
   get getUrl(): string {
     return this.url;

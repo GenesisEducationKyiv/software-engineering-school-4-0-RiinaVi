@@ -20,7 +20,7 @@ class CurrencyBeaconService extends RateSourceService {
   }
 
   async retrieve(): Promise<RateSourceResponse> {
-    const rawResponse = await fetch(this.url);
+    const rawResponse = await fetch(this.getUrl);
 
     const { rates, meta } =
       (await rawResponse?.json()) as CurrencyBeaconResponse;
