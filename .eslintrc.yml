@@ -34,6 +34,8 @@ overrides:
 
 rules:
   '@typescript-eslint/explicit-module-boundary-types': error
+  '@typescript-eslint/no-unsafe-call': off
+  '@typescript-eslint/no-unsafe-member-access': off
   '@typescript-eslint/no-misused-promises':
     - error
     - checksVoidReturn: false

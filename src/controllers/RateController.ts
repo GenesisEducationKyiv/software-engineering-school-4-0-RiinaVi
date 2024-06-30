@@ -7,7 +7,7 @@ class RateController {
   private currencyExchangeRateService: CurrencyExchangeRateService;
   constructor(private readonly rateSourceService?: RateSourceService) {
     this.currencyExchangeRateService = new CurrencyExchangeRateService(
-      this.rateSourceService,
+      rateSourceService,
     );
   }
 

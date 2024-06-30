@@ -1,5 +1,5 @@
 import { RateSourceResponse, RateSourceService } from './RateSourceService';
-import * as process from 'process';
+import { AbstractTransportLayer } from '../transportLayer/AbstractTransportLayer';
 
 export interface CurrencyBeaconResponse {
   meta: {
@@ -19,11 +19,12 @@ class CurrencyBeaconService extends RateSourceService {
     );
   }
 
-  async retrieve(): Promise<RateSourceResponse> {
-    const rawResponse = await fetch(this.getUrl);
-
-    const { rates, meta } =
-      (await rawResponse?.json()) as CurrencyBeaconResponse;
+  async retrieve(
+    transportLayer: AbstractTransportLayer,
+  ): Promise<RateSourceResponse> {
+    const { rates, meta } = await transportLayer.get<CurrencyBeaconResponse>(
+      this.url,
+    );
 
     return {
       rate: rates?.UAH,
