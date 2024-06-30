@@ -1,3 +1,5 @@
+import { AbstractTransportLayer } from '../transportLayer/AbstractTransportLayer';
+
 export interface RateSourceResponse {
   rate?: number;
   code: number;
@@ -5,7 +7,10 @@ export interface RateSourceResponse {
 }
 
 export abstract class RateSourceService {
-  protected constructor(protected readonly url: string) {}
+  protected constructor(
+    protected readonly url: string,
+    protected readonly transportLayer: AbstractTransportLayer,
+  ) {}
 
   abstract retrieve(): Promise<RateSourceResponse>;
 }
