@@ -7,8 +7,8 @@ const EMAIL_SUBJECT = 'Current USD to UAH exchange rate';
 class EmailSendingService {
   async sendEmail(email: string, emailTemplate: string): Promise<void> {
     await emailTransporter.sendMail({
-      from: email,
-      to: process.env.SENDER_EMAIL_ADDRESS,
+      from: process.env.SENDER_EMAIL_ADDRESS,
+      to: email,
       subject: EMAIL_SUBJECT,
       html: emailTemplate,
     });

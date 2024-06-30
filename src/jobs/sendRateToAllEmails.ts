@@ -8,10 +8,10 @@ const sendRateToAllEmails = async (): Promise<void> => {
     process.env.RATE_SOURCE_API_KEY ?? '',
     FetchTransportLayer,
   );
-  const currentRate = await currentRateSource.retrieve();
+  const { rate } = await currentRateSource.retrieve();
 
-  if (currentRate) {
-    const getTemplate = getRateEmailTemplate(currentRate);
+  if (rate) {
+    const getTemplate = getRateEmailTemplate(rate);
     await EmailSendingService.sendRateToAllEmails(getTemplate);
   }
 };

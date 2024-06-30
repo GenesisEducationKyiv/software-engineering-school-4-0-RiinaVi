@@ -1,11 +1,14 @@
-import { RateSourceService } from './RateSourceService';
+import { RateSourceResponse, RateSourceService } from './RateSourceService';
 import { AbstractTransportLayer } from '../transportLayer/AbstractTransportLayer';
 
-interface CurrencyBeaconResponse {
-  response: {
-    rates?: {
-      UAH: number;
-    };
+export interface CurrencyBeaconResponse {
+  meta: {
+    code: 200 | 401 | 422 | 500 | 503 | 429;
+    error_type?: string;
+    error_detail?: string;
+  };
+  rates?: {
+    UAH: number;
   };
 }
 
@@ -17,11 +20,17 @@ export class CurrencyBeaconService extends RateSourceService {
     );
   }
 
-  async retrieve(): Promise<number | undefined> {
-    const jsonResponse = await this.transportLayer.get<CurrencyBeaconResponse>(
-      this.url,
-    );
+  async retrieve(): Promise<RateSourceResponse> {
+    const { rates, meta } =
+      await this.transportLayer.get<CurrencyBeaconResponse>(this.url);
 
-    return jsonResponse.response?.rates?.UAH;
+    return {
+      rate: rates?.UAH,
+      code: meta.code,
+      errorMessage:
+        meta?.error_type && meta?.error_detail
+          ? `${meta.error_type}: ${meta.error_detail}`
+          : undefined,
+    };
   }
 }
