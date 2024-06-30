@@ -26,8 +26,12 @@ export default {
     },
     code: 400,
   },
-  SOMETHING_WENT_WRONG: {
-    error: { message: 'something went wrong :(' },
+  INTERNAL_SERVER_ERROR: {
+    error: { message: 'Internal Server Error :(' },
+    code: 500,
+  },
+  NO_PROVIDER_AVAILABLE: {
+    error: { message: 'No currency rate provider is available now' },
     code: 500,
   },
   API_KEY_NOT_FOUND: {

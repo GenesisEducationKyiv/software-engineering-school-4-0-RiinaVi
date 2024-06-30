@@ -1,14 +1,13 @@
 import EmailSendingService from '../services/EmailSendingService';
-import { CurrencyBeaconService } from '../services/rateSource/CurrencyBeaconService';
 import getRateEmailTemplate from '../utils/getRateEmailTemplate';
+import { CurrencyExchangeRateService } from '../services/CurrencyExchangeRateService';
 import FetchTransportLayer from '../services/transportLayer/FetchTransportLayer';
 
 const sendRateToAllEmails = async (): Promise<void> => {
-  const currentRateSource = new CurrencyBeaconService(
-    process.env.RATE_SOURCE_API_KEY ?? '',
+  const { rate } = await new CurrencyExchangeRateService(
+    undefined,
     FetchTransportLayer,
-  );
-  const { rate } = await currentRateSource.retrieve();
+  ).getRate();
 
   if (rate) {
     const getTemplate = getRateEmailTemplate(rate);

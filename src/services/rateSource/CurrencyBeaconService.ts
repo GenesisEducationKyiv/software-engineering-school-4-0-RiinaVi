@@ -12,17 +12,19 @@ export interface CurrencyBeaconResponse {
   };
 }
 
-export class CurrencyBeaconService extends RateSourceService {
-  constructor(apiKey: string, transportLayer: AbstractTransportLayer) {
+class CurrencyBeaconService extends RateSourceService {
+  constructor(apiKey: string) {
     super(
       `https://api.currencybeacon.com/v1/latest?api_key=${apiKey}&symbols=UAH`,
-      transportLayer,
     );
   }
 
-  async retrieve(): Promise<RateSourceResponse> {
-    const { rates, meta } =
-      await this.transportLayer.get<CurrencyBeaconResponse>(this.url);
+  async retrieve(
+    transportLayer: AbstractTransportLayer,
+  ): Promise<RateSourceResponse> {
+    const { rates, meta } = await transportLayer.get<CurrencyBeaconResponse>(
+      this.url,
+    );
 
     return {
       rate: rates?.UAH,
@@ -34,3 +36,7 @@ export class CurrencyBeaconService extends RateSourceService {
     };
   }
 }
+
+export default new CurrencyBeaconService(
+  process.env.CURRENCY_BEACON_API_KEY ?? '',
+);
