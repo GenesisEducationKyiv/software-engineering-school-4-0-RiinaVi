@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryColumn } from 'typeorm';
-import { v4 } from 'uuid';
+import { randomUUID } from 'crypto';
 
 @Entity('emails')
 class EmailEntity {
@@ -12,7 +12,7 @@ class EmailEntity {
   static create(data: Omit<EmailEntity, 'id'>): EmailEntity {
     const emailEntry = new EmailEntity();
 
-    emailEntry.id = v4();
+    emailEntry.id = randomUUID();
     emailEntry.email = data.email;
 
     return emailEntry;
