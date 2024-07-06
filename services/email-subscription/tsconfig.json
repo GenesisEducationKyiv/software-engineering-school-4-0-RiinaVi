@@ -10,9 +10,10 @@
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
+    "types": ["jest", "node"],
     "paths": {
       "*": ["node_modules/*"]
     }
   },
-  "exclude": ["**/node_modules", "**/dist"]
+  "include": ["src/**/*"]
 }

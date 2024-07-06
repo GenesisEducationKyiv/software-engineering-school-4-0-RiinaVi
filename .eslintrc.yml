@@ -26,7 +26,7 @@ overrides:
       default-case: off
       consistent-return: off
   - files:
-      - 'src/migrations/*-*.ts'
+      - '**/migrations/*-*.ts'
   - files:
       - '*.test.ts'
     rules:
