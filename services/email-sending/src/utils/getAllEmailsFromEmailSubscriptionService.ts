@@ -1,11 +1,11 @@
 const getAllEmailsFromEmailSubscriptionService = async (): Promise<
-  { emails: string }[]
+  { email: string }[]
 > => {
   const url = `http://${process.env.SERVER_IP ?? 'localhost'}:${
     process.env.EMAIL_SUBSCRIPTION_SERVICE_PORT ?? 8020
   }/emails`;
   const response = await fetch(url);
-  const emails = (await response?.json()) as { emails: string }[];
+  const emails = (await response?.json()) as { email: string }[];
 
   return emails;
 };
