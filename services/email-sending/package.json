@@ -1,0 +1,45 @@
+{
+  "name": "email-sending-service",
+  "version": "1.0.0",
+  "description": "Email Sending Service",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node ./dist/services/email-sending/src",
+    "dev:start": "npm-run-all build start",
+    "dev": "dotenv -- nodemon --watch src -e ts,ejs --exec npm run dev:start",
+    "test": "jest --setupFiles dotenv/config"
+  },
+  "keywords": [],
+  "author": "Arina Kysilova",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.2",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "jest": "^29.7.0",
+    "node-schedule": "^2.1.1",
+    "nodemailer": "^6.9.13",
+    "sinon": "^18.0.0",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.1.2",
+    "tsarch": "^5.4.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^16.4.1",
+    "@types/node-schedule": "^2.1.7",
+    "@types/nodemailer": "^6.4.15",
+    "@types/safe-timers": "^1.1.2",
+    "@types/sinon": "^17.0.3",
+    "@types/supertest": "^6.0.2",
+    "npm-run-all": "^4.1.5",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.3.5"
+  }
+}

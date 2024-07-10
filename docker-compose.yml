@@ -16,22 +16,61 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
     ports:
       - 5432:5432
-  web:
-    command: bash -c "while !</dev/tcp/postgres/5432;do sleep 1; done; npm run build; npm run typeorm:run; npm run start"
+  currency-exchange-rate:
+    command: bash -c "npm run build --workspace=currency-exchange-rate-service; npm run start --workspace=currency-exchange-rate-service"
     build:
       context: .
+      dockerfile: ./currency-exchange-rate.Dockerfile
+    environment:
+      - PORT=${CURRENCY_EXCHANGE_RATE_SERVICE_PORT}
+      - SERVER_IP=${SERVER_IP}
+      - CURRENCY_API_API_KEY=${CURRENCY_API_API_KEY}
+      - CURRENCY_BEACON_API_KEY=${CURRENCY_BEACON_API_KEY}
+    ports:
+      - 8010:8010
+  email-subscription:
+    command: bash -c "while !</dev/tcp/postgres/5432;do sleep 1; done; npm run typeorm:run --workspace=email-subscription-service; npm run build --workspace=email-subscription-service; npm run start --workspace=email-subscription-service"
+    build:
+      context: .
+      dockerfile: ./email-subscription.Dockerfile
     depends_on:
       - postgres
     environment:
-      - PORT=${PORT}
+      - PORT=${EMAIL_SUBSCRIPTION_SERVICE_PORT}
       - POSTGRES_HOST=${POSTGRES_HOST}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PORT=${POSTGRES_PORT}
       - SERVER_IP=${SERVER_IP}
-      - CURRENCY_BEACON_API_KEY=${CURRENCY_BEACON_API_KEY}
+    ports:
+      - 8020:8020
+  email-sending:
+    command: bash -c "npm run build --workspace=email-sending-service; npm run start --workspace=email-sending-service"
+    build:
+      context: .
+      dockerfile: ./email-sending.Dockerfile
+    environment:
+      - PORT=8030
+      - SERVER_IP=${SERVER_IP}
       - SENDER_EMAIL_ADDRESS=${SENDER_EMAIL_ADDRESS}
       - SENDER_EMAIL_PASSWORD=${SENDER_EMAIL_PASSWORD}
+    ports:
+      - 8030:8030
+  app:
+    command: bash -c "npm run build --workspace=app-service; npm run start --workspace=app-service"
+    build:
+      context: .
+      dockerfile: ./app.Dockerfile
+    depends_on:
+      - currency-exchange-rate
+      - email-subscription
+      - email-sending
+      - postgres
+    environment:
+      - PORT=${PORT}
+      - SERVER_IP=${SERVER_IP}
+      - CURRENCY_EXCHANGE_RATE_SERVICE_PORT=${CURRENCY_EXCHANGE_RATE_SERVICE_PORT}
+      - EMAIL_SUBSCRIPTION_SERVICE_PORT=${EMAIL_SUBSCRIPTION_SERVICE_PORT}
     ports:
       - 8000:8000
