@@ -4,9 +4,8 @@
   "description": "Currency Exchange Rate Service",
   "main": "dist/index.js",
   "scripts": {
-    "dotenv": "node ./node_modules/dotenv/lib/main.js",
     "build": "tsc",
-    "start": "ts-node ./dist",
+    "start": "ts-node ./dist/services/currency-exchange-rate/src",
     "dev:start": "npm-run-all build start",
     "dev": "dotenv -- nodemon --watch src -e ts,ejs --exec npm run dev:start",
     "test": "jest --setupFiles dotenv/config",

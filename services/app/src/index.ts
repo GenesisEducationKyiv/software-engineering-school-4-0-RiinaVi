@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 
-import responseMessages from './constants/responseMessages';
+import responseMessages from '../../../constants/responseMessages';
 import router from './routes';
 
 const { INTERNAL_SERVER_ERROR } = responseMessages;

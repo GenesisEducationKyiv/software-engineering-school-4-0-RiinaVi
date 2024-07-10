@@ -7,17 +7,12 @@
     "eslint": "eslint --ext .ts services",
     "prettier": "prettier services --write",
     "prettier:check": "prettier services --check ",
-    "dotenv": "node ./node_modules/dotenv/lib/main.js",
     "build": "tsc",
     "start": "ts-node ./dist",
     "dev:start": "npm-run-all build start",
     "dev": "dotenv -- nodemon --watch src -e ts,ejs --exec npm run dev:start",
     "test": "jest  --testPathIgnorePatterns=\\(/dist/\\) --setupFiles dotenv/config "
   },
-  "pre-commit": [
-    "eslint",
-    "prettier:check"
-  ],
   "keywords": [],
   "author": "Arina Kysilova",
   "license": "ISC",
