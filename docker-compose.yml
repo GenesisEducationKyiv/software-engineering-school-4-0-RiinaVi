@@ -58,6 +58,8 @@ services:
     build:
       context: .
       dockerfile: ./email-sending.Dockerfile
+    depends_on:
+      - rabbitmq
     environment:
       - PORT=8030
       - SERVER_IP=${SERVER_IP}
