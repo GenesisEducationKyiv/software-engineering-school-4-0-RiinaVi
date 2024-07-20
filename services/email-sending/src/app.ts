@@ -4,8 +4,11 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import schedule from 'node-schedule';
 
-import sendRateToAllEmails from './jobs/sendRateToAllEmails';
+export const QUEUE = 'emails';
+
 import responseMessages from '../../../constants/responseMessages';
+import rabbitMQConsumer from './utils/rabbitMQConsumer';
+import rabbitMQPublisher from './utils/rabbitMQPublisher';
 
 const { INTERNAL_SERVER_ERROR } = responseMessages;
 // every day at 10:00
@@ -29,4 +32,10 @@ app.use((err: Error, _req: Request, res: Response) => {
   }
 });
 
-schedule.scheduleJob(SENDING_MAILS_SCHEDULING_TIME, sendRateToAllEmails);
+schedule.scheduleJob(SENDING_MAILS_SCHEDULING_TIME, async () => {
+  await rabbitMQPublisher(QUEUE);
+});
+
+export const main = async (): Promise<void> => {
+  await rabbitMQConsumer(QUEUE);
+};

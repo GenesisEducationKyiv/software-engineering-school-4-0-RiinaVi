@@ -16,6 +16,14 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
     ports:
       - 5432:5432
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
   currency-exchange-rate:
     command: bash -c "npm run build --workspace=currency-exchange-rate-service; npm run start --workspace=currency-exchange-rate-service"
     build:
@@ -50,6 +58,8 @@ services:
     build:
       context: .
       dockerfile: ./email-sending.Dockerfile
+    depends_on:
+      - rabbitmq
     environment:
       - PORT=8030
       - SERVER_IP=${SERVER_IP}
