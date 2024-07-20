@@ -3,13 +3,12 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import schedule from 'node-schedule';
-import { randomUUID } from 'crypto';
 
-import amqplib from 'amqplib';
-const queue = 'emails';
+export const QUEUE = 'emails';
 
-import sendRateToAllEmails from './jobs/sendRateToAllEmails';
 import responseMessages from '../../../constants/responseMessages';
+import rabbitMQConsumer from './utils/rabbitMQConsumer';
+import rabbitMQPublisher from './utils/rabbitMQPublisher';
 
 const { INTERNAL_SERVER_ERROR } = responseMessages;
 // every day at 10:00
@@ -34,35 +33,9 @@ app.use((err: Error, _req: Request, res: Response) => {
 });
 
 schedule.scheduleJob(SENDING_MAILS_SCHEDULING_TIME, async () => {
-  const connection = await amqplib.connect(
-    `amqp://${process.env.SERVER_IP ?? 'localhost'}`,
-  );
-  const channel = await connection.createChannel();
-  await channel.assertQueue(queue);
-
-  const message = {
-    eventId: randomUUID(),
-    eventType: 'EmailScheduled',
-    timeStamp: +new Date(),
-  };
-
-  channel.sendToQueue(queue, Buffer.from(JSON.stringify(message)));
+  await rabbitMQPublisher(QUEUE);
 });
 
 export const main = async (): Promise<void> => {
-  const connection = await amqplib.connect(
-    `amqp://${process.env.SERVER_IP ?? 'localhost'}`,
-  );
-  const channel = await connection.createChannel();
-  await channel.assertQueue(queue);
-
-  await channel.consume(queue, async (message) => {
-    if (message !== null) {
-      console.log('Received:', message.content.toString());
-      channel.ack(message);
-      await sendRateToAllEmails();
-    } else {
-      console.log('Consumer cancelled by server');
-    }
-  });
+  await rabbitMQConsumer(QUEUE);
 };
